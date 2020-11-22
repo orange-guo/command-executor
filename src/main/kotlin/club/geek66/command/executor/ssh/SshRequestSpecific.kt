@@ -11,8 +11,6 @@ data class SshRequestSpecific(
 	override val timeout: Long = 10000,
 	override val stdIn: () -> InputStream = InputStream::nullInputStream,
 	override val commands: Nel<String>,
-	val user: String,
-	val host: String = "localhost",
-	val port: Int = 22,
+	val connectionInfo: SshConnectionInfo,
 	val credential: SshCredential
 ) : RequestSpecific<SshRequestSpecific>

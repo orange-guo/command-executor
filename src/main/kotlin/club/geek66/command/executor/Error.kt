@@ -1,10 +1,10 @@
 package club.geek66.command.executor
 
-abstract class CommandError(
-	val message: String
-) {
+import arrow.typeclasses.Show
 
-	override fun toString(): String = message
+abstract class CommandError(private val message: String) : Show<CommandError> {
+
+	override fun CommandError.show(): String = message
 
 }
 
@@ -25,5 +25,7 @@ sealed class ExecutionError(msg: String) : CommandError(msg) {
 	class ReadOutPutError : ExecutionError("read out error")
 
 	class ExecError(msg: String) : ExecutionError("exec error, msg$msg")
+
+	class OpenSessionFailed(msg: String) : ExecutionError(msg)
 
 }

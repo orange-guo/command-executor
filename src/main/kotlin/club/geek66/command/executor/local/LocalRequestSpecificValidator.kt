@@ -2,15 +2,14 @@ package club.geek66.command.executor.local
 
 import arrow.core.Either
 import arrow.core.filterOrElse
-import club.geek66.command.executor.RequestSpecificValidator
 import club.geek66.command.executor.SpecificValidationError
+import club.geek66.command.executor.Validator
 import java.nio.file.Files
 import java.nio.file.Path
 
-object LocalRequestSpecificValidator : RequestSpecificValidator<LocalRequestSpecific> {
-
-	override fun validate(specification: LocalRequestSpecific): Either<SpecificValidationError, LocalRequestSpecific> =
-		Either.right(specification).filterOrElse({
+val localValidator: Validator<LocalRequestSpecific, SpecificValidationError> = Validator { specific ->
+	Either.right(specific)
+		.filterOrElse({
 			it.commands.isNotEmpty()
 		}) {
 			SpecificValidationError.EmptyCommand
@@ -19,5 +18,4 @@ object LocalRequestSpecificValidator : RequestSpecificValidator<LocalRequestSpec
 		}) {
 			SpecificValidationError.BadWorkDir
 		}
-
 }

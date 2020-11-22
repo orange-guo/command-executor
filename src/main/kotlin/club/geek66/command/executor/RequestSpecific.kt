@@ -14,6 +14,7 @@ interface RequestSpecific<T : RequestSpecific<T>> {
 
 	val commands: Nel<String>
 
+	@Suppress(names = ["UNCHECKED_CAST"])
 	fun fork(apply: T.() -> T): T =
 		(this as T).apply()
 
