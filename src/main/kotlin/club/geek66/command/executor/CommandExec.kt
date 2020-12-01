@@ -9,9 +9,10 @@ import club.geek66.command.executor.ssh.SshRequestSpecific
 import club.geek66.command.executor.ssh.sshExecutor
 import club.geek66.command.executor.ssh.sshValidator
 
+
 class CommandExec<T : RequestSpecific<T>>(
-	private val executor: Executor<T>,
-	private val validator: Validator<T, SpecificValidationError>
+	private val validator: Validator<T, SpecificValidationError>,
+	private val executor: Executor<T>
 ) {
 
 	fun exec(supplier: () -> T): Either<CommandError, ResponseSpecification<T>> =
@@ -19,9 +20,9 @@ class CommandExec<T : RequestSpecific<T>>(
 
 	companion object {
 
-		val local: CommandExec<LocalRequestSpecific> = CommandExec(localExecutor, localValidator)
+		val local: CommandExec<LocalRequestSpecific> = CommandExec(localValidator, localExecutor)
 
-		val ssh: CommandExec<SshRequestSpecific> = CommandExec(sshExecutor, sshValidator)
+		val ssh: CommandExec<SshRequestSpecific> = CommandExec(sshValidator, sshExecutor)
 
 	}
 

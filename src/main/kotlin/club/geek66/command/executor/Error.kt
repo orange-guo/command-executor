@@ -12,9 +12,19 @@ sealed class SpecificValidationError(msg: String) : CommandError(msg) {
 
 	object EmptyCommand : SpecificValidationError("Empty commands")
 
+	class BadTimeout(timeout: Long) : SpecificValidationError("Bad timeout $timeout")
+
 	object BadWorkDir : SpecificValidationError("Bad workDir")
 
-	object BadSshPort : SpecificValidationError("Port must range in 1-65535")
+	object BadSshHost : SpecificValidationError("Bad ssh host")
+
+	object BadSshUser : SpecificValidationError("Bad ssh user")
+
+	object BadSshPort : SpecificValidationError("Bad ssh port that must range in 1-65535")
+
+	object BadSshPassword : SpecificValidationError("Bad ssh password")
+
+	object BadSshPrivateKey : SpecificValidationError("Bad ssh privateKey")
 
 }
 
