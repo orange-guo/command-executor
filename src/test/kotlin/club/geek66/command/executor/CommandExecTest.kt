@@ -8,8 +8,11 @@ import club.geek66.command.executor.ssh.SshConnectionInfo
 import club.geek66.command.executor.ssh.SshCredential
 import club.geek66.command.executor.ssh.SshRequestSpecific
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 /**
@@ -21,27 +24,48 @@ import kotlin.test.assertEquals
 class CommandExecTest {
 
 	@Test
-	fun exec() {
+	fun testLocal() {
+		// test echo env
 		CommandExec.local.exec {
 			LocalRequestSpecific(
-				environments = emptyMap<String, String>().k(),
-				commands = Nel("echo", "hello"),
-				workDir = "/home/orange"
+				environments = mapOf("NAME" to "TEST").k(),
+				commands = Nel("bash", "-c", "echo ${'$'}NAME"),
+				workDir = "/tmp"
 			)
 		}.let {
 			when (it) {
 				is Either.Right -> {
-					assertEquals("hello\n", it.b.response.stdOut)
+					assertEquals("TEST\n", it.b.response.stdOut)
 				}
-
-				else -> throw IllegalArgumentException()
+				else -> throw IllegalArgumentException(it.toString())
 			}
 		}
 
+		Files.deleteIfExists(Path.of("/tmp/123"))
+		// test touch file
+		CommandExec.local.exec {
+			LocalRequestSpecific(
+				environments = emptyMap<String, String>().k(),
+				commands = Nel("touch", "123"),
+				workDir = "/tmp"
+			)
+		}.let {
+			when (it) {
+				is Either.Right -> assertEquals(0, it.b.response.exitCode)
+				else -> throw IllegalArgumentException(it.toString())
+			}
+		}
+		assertTrue(Files.exists(Path.of("/tmp/123")))
+	}
+
+	@Test
+	fun testSsh() {
+		// only support environment that name start with LC(ssh security config)
+		// see https://stackoverflow.com/questions/9366914/setting-environment-variables-on-a-jsch-channelexec?rq=1 Paŭlo Ebermann's answer
 		CommandExec.ssh.exec {
 			SshRequestSpecific(
-				environments = mapOf("NAME" to "Jack").k(),
-				commands = Nel("echo", "hello"),
+				environments = mapOf("LC_TEST" to "Jack").k(),
+				commands = Nel("echo", "${'$'}LC_TEST"),
 				connectionInfo = SshConnectionInfo(user = "orange"),
 				credential = SshCredential.PrivateKeyCredential(
 					privateKey = File("/home/orange/.ssh/id_rsa").readText()
@@ -50,7 +74,8 @@ class CommandExecTest {
 		}.let {
 			when (it) {
 				is Either.Right -> {
-					assertEquals("hello\n", it.b.response.stdOut)
+					// end with \r\n
+					assertEquals("Jack\r\n", it.b.response.stdOut)
 				}
 
 				else -> throw IllegalArgumentException()

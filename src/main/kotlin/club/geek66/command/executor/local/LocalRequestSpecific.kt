@@ -12,4 +12,4 @@ data class LocalRequestSpecific(
 	override val stdIn: () -> InputStream = InputStream::nullInputStream,
 	override val commands: Nel<String>,
 	val workDir: String,
-) : RequestSpecific<LocalRequestSpecific>
+) : RequestSpecific

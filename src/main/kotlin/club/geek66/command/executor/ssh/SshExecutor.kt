@@ -17,6 +17,7 @@ import io.vavr.concurrent.Future
 import java.io.ByteArrayOutputStream
 import java.util.concurrent.TimeUnit
 
+
 val sshExecutor = Executor<SshRequestSpecific> { specific ->
 	with(specific) {
 		val out = ByteArrayOutputStream()
@@ -34,6 +35,7 @@ val sshExecutor = Executor<SshRequestSpecific> { specific ->
 			ExecutionError.OpenSessionFailed("")
 		}.map {
 			val channelExec: ChannelExec = it.openChannel("exec") as ChannelExec
+			channelExec.setPty(true)
 			channelExec.inputStream = stdIn()
 			channelExec.outputStream = out
 			channelExec.setErrStream(err)

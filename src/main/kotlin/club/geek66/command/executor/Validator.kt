@@ -9,7 +9,7 @@ fun interface Validator<T, E> {
 
 }
 
-fun <T : RequestSpecific<T>> baseValidator(): Validator<T, SpecificValidationError> = Validator { spec ->
+fun <T : RequestSpecific> specValidator(): Validator<T, SpecificValidationError> = Validator { spec ->
 	Either.right(spec)
 		.flatMap {
 			when {

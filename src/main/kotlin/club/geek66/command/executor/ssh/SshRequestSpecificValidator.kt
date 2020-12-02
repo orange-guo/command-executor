@@ -9,12 +9,12 @@ import club.geek66.command.executor.SpecificValidationError.BadSshPort
 import club.geek66.command.executor.SpecificValidationError.BadSshPrivateKey
 import club.geek66.command.executor.SpecificValidationError.BadSshUser
 import club.geek66.command.executor.Validator
-import club.geek66.command.executor.baseValidator
+import club.geek66.command.executor.specValidator
 import club.geek66.command.executor.ssh.SshCredential.PasswordCredential
 import club.geek66.command.executor.ssh.SshCredential.PrivateKeyCredential
 
 val sshValidator = Validator<SshRequestSpecific, SpecificValidationError> { specific ->
-	baseValidator<SshRequestSpecific>()
+	specValidator<SshRequestSpecific>()
 		.validate(specific)
 		.flatMap {
 			connectionInfoValidator

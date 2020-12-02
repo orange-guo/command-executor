@@ -13,4 +13,4 @@ data class SshRequestSpecific(
 	override val commands: Nel<String>,
 	val connectionInfo: SshConnectionInfo,
 	val credential: SshCredential
-) : RequestSpecific<SshRequestSpecific>
+) : RequestSpecific

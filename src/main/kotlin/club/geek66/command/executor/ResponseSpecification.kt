@@ -1,16 +1,16 @@
 package club.geek66.command.executor
 
-interface ResponseSpecification<T : RequestSpecific<T>> {
+interface ResponseSpecification<T : RequestSpecific> {
 
-	val request: RequestSpecific<T>
+	val request: T
 
 	val response: CommandResponse
 
 }
 
-data class DefaultResponseSpecification<T : RequestSpecific<T>>(
+data class DefaultResponseSpecification<T : RequestSpecific>(
 	override val response: CommandResponse,
-	override val request: RequestSpecific<T>,
+	override val request: T,
 ) : ResponseSpecification<T>
 
 data class CommandResponse(

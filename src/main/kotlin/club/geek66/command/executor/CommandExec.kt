@@ -10,7 +10,7 @@ import club.geek66.command.executor.ssh.sshExecutor
 import club.geek66.command.executor.ssh.sshValidator
 
 
-class CommandExec<T : RequestSpecific<T>>(
+class CommandExec<T : RequestSpecific>(
 	private val validator: Validator<T, SpecificValidationError>,
 	private val executor: Executor<T>
 ) {

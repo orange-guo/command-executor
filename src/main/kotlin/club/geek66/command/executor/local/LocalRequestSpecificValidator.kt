@@ -4,12 +4,12 @@ import arrow.core.Either
 import arrow.core.flatMap
 import club.geek66.command.executor.SpecificValidationError
 import club.geek66.command.executor.Validator
-import club.geek66.command.executor.baseValidator
+import club.geek66.command.executor.specValidator
 import java.nio.file.Files
 import java.nio.file.Path
 
 val localValidator: Validator<LocalRequestSpecific, SpecificValidationError> = Validator { specific ->
-	baseValidator<LocalRequestSpecific>()
+	specValidator<LocalRequestSpecific>()
 		.validate(specific)
 		.flatMap {
 			when {

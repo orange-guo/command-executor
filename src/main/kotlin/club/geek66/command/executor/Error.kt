@@ -32,9 +32,9 @@ sealed class ExecutionError(msg: String) : CommandError(msg) {
 
 	object ProcessTimeout : ExecutionError("process time out")
 
-	class ReadOutPutError : ExecutionError("read out error")
+	class ReadStdOutError(detailMsg: String) : ExecutionError("read std out, cause: $detailMsg")
 
-	class ExecError(msg: String) : ExecutionError("exec error, msg$msg")
+	class ReadStdErrError(detailMsg: String) : ExecutionError("read std err, cause: $detailMsg")
 
 	class OpenSessionFailed(msg: String) : ExecutionError(msg)
 
