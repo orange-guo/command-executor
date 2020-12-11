@@ -12,7 +12,7 @@ import club.geek66.command.executor.ssh.sshValidator
 
 class CommandExec<T : RequestSpecific>(
 	private val validator: Validator<T, SpecificValidationError>,
-	private val executor: Executor<T>
+	private val executor: Executor<T>,
 ) {
 
 	fun exec(supplier: () -> T): Either<CommandError, ResponseSpecification<T>> =
